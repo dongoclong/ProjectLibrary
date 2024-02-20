@@ -1,0 +1,4 @@
+- Case login
+		- reading code + learn reactjs (cách sử dụng state + nagative (điều hướng routing)) : 2 ngày (tối T3 -> TỐI T5)
+		- Code lên form login (bản cũ quá basic -> thêm css + làm đẹp bằng bootstrap react ) + code thử api của backend (user name + password) 
+		- sau khi đăng nhập có thể nagative-> qua trang khác + logout(sau khi nhấn button logout -> điều hướng về login)
