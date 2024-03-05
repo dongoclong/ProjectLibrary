@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const baseUrl = 'https://apidic.duckdns.org/api/v1/user';
+const baseUrl = 'http://localhost:8000/api/v1/user';
 
 
 const handleError = (action, error) => {
@@ -114,7 +114,7 @@ export const addAccount = async (user_name, password, role, image) => {
     console.log(formData)
     console.log(Object.fromEntries(formData.entries()));
 
-    const response = await axios.post('https://apidic.duckdns.org/api/v1/user/add', formData, {
+    const response = await axios.post('http://localhost:8000/api/v1/user/add', formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
         'Access-Control-Allow-Origin': 'https://testuidic.duckdns.org'

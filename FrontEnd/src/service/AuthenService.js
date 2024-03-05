@@ -7,7 +7,7 @@ const Authen = {
       formData.append('user_name', user_name);
       formData.append('password', password);
 
-      const response = await axios.post('https://apidic.duckdns.org/api/v1/user/login', formData, {
+      const response = await axios.post('http://localhost:8000/api/v1/user/login', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },

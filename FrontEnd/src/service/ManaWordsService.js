@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const baseUrl = "https://apidic.duckdns.org/api/v1/product"; // Replace with your actual API URL
+const baseUrl = "http://localhost:8000/api/v1/product"; // Replace with your actual API URL
 const loginInfo = localStorage.getItem('loginInfo'); 
 export const getWords = async () => {
   try {
@@ -30,7 +30,7 @@ export const addWord = async (word, meaning, note, subject, image) => {
     console.log(formData)
     console.log(Object.fromEntries(formData.entries()));
 
-    const response = await axios.post('https://apidic.duckdns.org/api/v1/product/add', formData, {
+    const response = await axios.post('http://localhost:8000/api/v1/product/add', formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
         'Access-Control-Allow-Origin': 'https://testuidic.duckdns.org'
