@@ -117,7 +117,7 @@ export const addAccount = async (user_name, password, role, image) => {
     const response = await axios.post('http://localhost:8000/api/v1/user/add', formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
-        'Access-Control-Allow-Origin': 'https://testuidic.duckdns.org'
+        'Access-Control-Allow-Origin': 'http://localhost:3000/'
       },
     });
 

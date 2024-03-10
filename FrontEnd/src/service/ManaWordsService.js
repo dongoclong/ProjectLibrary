@@ -33,7 +33,7 @@ export const addWord = async (word, meaning, note, subject, image) => {
     const response = await axios.post('http://localhost:8000/api/v1/product/add', formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
-        'Access-Control-Allow-Origin': 'https://testuidic.duckdns.org'
+        'Access-Control-Allow-Origin': 'http://localhost:3000/'
       },
     });
 
@@ -63,6 +63,7 @@ export const editWord= async (id_word, word, meaning, note, subject, image ) => 
     if (image != undefined) {
       formData.append('src_img', image);
     }
+    console.log(formData.getAll('src_img'));
     const requestOptions = {
       method: 'PATCH',
     };

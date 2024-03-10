@@ -49,6 +49,12 @@ const Word2 = () => {
     fetchData();
   }, []);
 
+  const handleDeleteImage = (index) => {
+    // Tạo một bản sao mới của mảng ảnh không bao gồm ảnh cần xóa
+    const updatedImages = selectedRow.image.filter((_, i) => i !== index);
+    setSelectedRow({ ...selectedRow, image: updatedImages });
+  };
+
 
   useEffect(() => {
     getWords();
@@ -366,7 +372,7 @@ const Word2 = () => {
           contentLabel={"Edit Word"}
           style={modalStyles}
         >
-          {successMessage2 && <div style={alertMessageStyle}>{successMessage2}</div>}       
+          {successMessage2 && <div style={alertMessageStyle}>{successMessage2}</div>}
           <div className="text-center">
             <h2>{"Edit Word"}</h2>
           </div>
@@ -424,7 +430,7 @@ const Word2 = () => {
               />
             </div>
 
-            <div style={{ padding: '15px 10px', maxWidth: '100%', overflowX: 'auto' }}>
+            {/* <div style={{ padding: '15px 10px', maxWidth: '100%', overflowX: 'auto' }}>
               <div style={{ display: 'flex' }}>
 
                 {selectedRow.image.map((imageSrc, index) => (
@@ -436,6 +442,35 @@ const Word2 = () => {
                     />
                   </div>
                 ))}
+              </div>
+            </div> */}
+
+            <div style={{ padding: '15px 10px', maxWidth: '100%', overflowX: 'auto' }}>
+              <div style={{ display: 'flex' }}>
+
+                {selectedRow.image && selectedRow.image.map((imageSrc, index) => (
+                  <div key={index} style={{ position: 'relative', height: '200px', marginRight: '10px' }}>
+                    <img
+                      src={imageSrc}
+                      style={{ height: '100%', width: 'auto' }}
+                    />
+                    <button
+                      onClick={() => handleDeleteImage(index)}
+                      style={{
+                        position: 'absolute',
+                        top: 0,
+                        right: 0,
+                        backgroundColor: 'transparent',
+                        border: 'none',
+                        cursor: 'pointer',
+                        padding: '0.5rem',
+                      }}
+                    >
+                      x
+                    </button>
+                  </div>
+                ))}
+
               </div>
             </div>
             <div style={buttonContainerStyles}>
