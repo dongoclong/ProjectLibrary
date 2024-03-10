@@ -23,7 +23,7 @@ app.add_middleware(
 async def get_products():
     products_item = []
     # Mở file CSV và đọc dữ liệu
-    with open("products.json", "r") as file:
+    with open("products.json", "r", encoding= "utf-8") as file:
         products = json.load(file)
         for product in products:
             products_item.append(product)
@@ -58,18 +58,18 @@ user_add: Optional[str] = None, subject: Optional[str] = None, src_img: List[Upl
     if src_img is not None:
         for items in src_img:
             file_name = f"{id_product}_{random.randint(0, 100000)}"
-            path_to_image = f"/var/www/build/image/{file_name}.png"
+            path_to_image = f"D:/Long/Longdayhoc/ProjectLibrary/FrontEnd/public/Images/{file_name}.png"
             with open(path_to_image, "wb") as image:
                 image.write(items.file.read())
             link_img = f"http://localhost:3000/Images/{file_name}.png"
             list_link_img.append(link_img)
 
     # Mở file CSV và đọc dữ liệu
-    with open("products.json", "r") as file:
+    with open("products.json", "r", encoding= "utf-8") as file:
         products = json.load(file)
 
 
-    with open("products_update.json", "r") as file:
+    with open("products_update.json", "r", encoding= "utf-8") as file:
         data = json.load(file)
 
     # Tìm hàng có id_product tương ứng và cập nhật giá trị
@@ -119,7 +119,7 @@ user_add: Optional[str] = None, subject: Optional[str] = None, src_img: List[Upl
 def delete_products(id_product: int):
     try:
         # Mở file JSON và đọc dữ liệu
-        with open("products.json", "r") as file:
+        with open("products.json", "r", encoding= "utf-8") as file:
             products = json.load(file)
 
         # Tìm hàng có id_product tương ứng và cập nhật giá trị
@@ -155,14 +155,14 @@ async def create_user(request: Request, src_img: List[UploadFile] = File(None)):
 
     date = datetime.datetime.now().strftime('%H:%M:%S %d/%m/%Y')
     try:
-        with open("products.json", "r") as file:
+        with open("products.json", "r", encoding= "utf-8") as file:
             data = json.load(file)
     except FileNotFoundError:
         # Nếu file không tồn tại, tạo một danh sách rỗng
         data = []
 
     try:
-        with open("products_update.json", "r") as file:
+        with open("products_update.json", "r", encoding= "utf-8") as file:
             products = json.load(file)
     except FileNotFoundError:
         # Nếu file không tồn tại, tạo một danh sách rỗng
@@ -178,7 +178,7 @@ async def create_user(request: Request, src_img: List[UploadFile] = File(None)):
     if src_img is not None:
         for items in src_img:
             file_name = f"{new_id}_{random.randint(0, 100000)}"
-            path_to_image = f"/var/www/build/image/{file_name}.png"
+            path_to_image = f"D:/Long/Longdayhoc/ProjectLibrary/FrontEnd/public/Images/{file_name}.png"
             with open(path_to_image, "wb") as image:
                 image.write(items.file.read())
             link_img = f"http://localhost:3000/Images/{file_name}.png"
@@ -212,7 +212,7 @@ async def get_users():
     users = []
     json_file_path = "accounts.json"
     try:
-        with open(json_file_path, "r") as file:
+        with open(json_file_path, "r", encoding= "utf-8") as file:
             data = json.load(file)
             for user in data:
                 # Loại bỏ trường "password" khỏi đối tượng người dùng
@@ -231,7 +231,7 @@ async def create_user(request: Request, src_img: UploadFile = File(None)):
     role = form_data.get("role")
     print(id_user_add)
     print(src_img)
-    with open("accounts.json", "r") as file:
+    with open("accounts.json", "r", encoding= "utf-8") as file:
         user = json.load(file)
 
     for items in user:
@@ -242,7 +242,7 @@ async def create_user(request: Request, src_img: UploadFile = File(None)):
     date = datetime.datetime.now().strftime('%H:%M:%S %d/%m/%Y')
     try:
         # Mở tệp JSON và đọc dữ liệu
-        with open("accounts.json", "r") as file:
+        with open("accounts.json", "r", encoding= "utf-8") as file:
             data = json.load(file)
     except FileNotFoundError:
         # Nếu tệp không tồn tại, tạo một danh sách rỗng
@@ -321,7 +321,7 @@ src_img: UploadFile = File(None)):
 
                     if src_img is not None:
                         file_name = f"{id_user}_{random.randint(0, 100000)}"
-                        path_to_image = f"/var/www/build/image/{file_name}.png"
+                        path_to_image = f"D:/Long/Longdayhoc/ProjectLibrary/FrontEnd/public/Images/{file_name}.png"
                         with open(path_to_image, "wb") as image:
                             image.write(items.file.read())
                         link_img = f"http://localhost:3000/Images/{file_name}.png"
@@ -342,7 +342,7 @@ src_img: UploadFile = File(None)):
 
                 if src_img is not None:
                     file_name = f"{id_user}_{random.randint(0, 100000)}"
-                    path_to_image = f"/var/www/build/image/{file_name}.png"
+                    path_to_image = f"D:/Long/Longdayhoc/ProjectLibrary/FrontEnd/public/Images/{file_name}.png"
                     with open(path_to_image, "wb") as image:
                         image.write(items.file.read())
                     link_img = f"http://localhost:3000/Images/{file_name}.png"
