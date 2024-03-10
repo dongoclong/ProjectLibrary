@@ -17,6 +17,14 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+################################
+#path_img
+img_path = 'D:/ProjectLibrary/FrontEnd/public/Images/'
+link_img_path = 'http://localhost:3000/Images/'
+################################
+
+
+
 
 # Handle products
 @app.get("/api/v1/product/show")
@@ -44,29 +52,78 @@ def get_username_by_id(id_user):
     return None
 
 @app.patch("/api/v1/product/update/{id_product}")
-def update_products(id_product: int, id_user_update: int, word: Optional[str] = None, meaning: Optional[str] = None, note: Optional[str] = None, 
+def update_products(id_product: int, id_user_update: int, word: Optional[str] = None, list_id_img: Optional[str] = None, meaning: Optional[str] = None, note: Optional[str] = None, 
 user_add: Optional[str] = None, subject: Optional[str] = None, src_img: List[UploadFile] = File(None)):
  # Đường dẫn đến file CSV
-    print(word, meaning, note, user_add, subject)
+    print(id_product, word, meaning, note, user_add, subject)
     word = word if word != "" else None
     meaning = meaning if meaning != "" else None
     note = note if note != "" else None
     user_add = user_add if user_add != "" else None
     subject = subject if subject != "" else None
     list_link_img = []
-    print(word, meaning, note, user_add, subject)
-    if src_img is not None:
-        for items in src_img:
-            file_name = f"{id_product}_{random.randint(0, 100000)}"
-            path_to_image = f"D:/Long/Longdayhoc/ProjectLibrary/FrontEnd/public/Images/{file_name}.png"
-            with open(path_to_image, "wb") as image:
-                image.write(items.file.read())
-            link_img = f"http://localhost:3000/Images/{file_name}.png"
-            list_link_img.append(link_img)
-
+    # print(word, meaning, note, user_add, subject)
+    list_id_img = list_id_img.split(",")
+    list_id_img = list(map(int, list_id_img))
+        # for items in list_id_img:
     # Mở file CSV và đọc dữ liệu
     with open("products.json", "r", encoding= "utf-8") as file:
         products = json.load(file)
+    # print(list_id_img)
+    list_remove = []
+    if list_id_img is not None:
+        for items in products:
+            if items['id'] == id_product:
+                # for item in items:
+                    images = items['image']
+                    for image in images:
+                        print(image['id'])
+                        print(list_id_img)
+                        if int(image['id']) in list_id_img:
+                            list_remove.append(image)
+                            print('done!')
+                        else:
+                            continue
+
+                    for image in list_remove:
+                            file_name = image['link'].split('/')[-1]
+                            file_path = f'{img_path}{file_name}'
+                            if os.path.exists(file_path):
+                                os.remove(file_path)
+                            images.remove(image)
+                            print('done!')
+
+
+
+                    i = 0
+                    for image in images:
+                        image['id'] = i
+                        i = i+1
+                    
+                    # for image in images:
+                    #     print(image)
+
+    for items in products:
+            if items['id'] == id_product:   
+                num_img = len(items['image'])
+
+    link_img ={}
+    list_link_img = []
+    if src_img is not None:
+        i = num_img
+        for items in src_img:
+            file_name = f"{id_product}_{random.randint(0, 100000)}"
+            path_to_image = f"{img_path}{file_name}.png"
+            with open(path_to_image, "wb") as image:
+                image.write(items.file.read())
+            link = f"{link_img_path}{file_name}.png"
+            link_img = {'id': i,'link': link}
+            list_link_img.append(link_img)
+            i  = i + 1
+
+    # Mở file CSV và đọc dữ liệu
+    # with open("products.json", "r", encoding= "utf-8") as file:
+    #     products = json.load(file)
 
 
     with open("products_update.json", "r", encoding= "utf-8") as file:
@@ -87,6 +144,7 @@ user_add: Optional[str] = None, subject: Optional[str] = None, src_img: List[Upl
             if subject is not None:
                 product["subject"] = subject
             if src_img:
+                # print(product["image"])
                 # Ghi dữ liệu từ UploadFile vào file
                 product["image"].extend(list_link_img)
 
@@ -114,6 +172,10 @@ user_add: Optional[str] = None, subject: Optional[str] = None, src_img: List[Upl
 
     # Trả về phản hồi thành công
     return {"message": "Thay đổi thông tin từ thành công!"}
+
+
+
+
 
 @app.delete("/api/v1/product/delete/{id_product}")
 def delete_products(id_product: int):
@@ -173,16 +235,19 @@ async def create_user(request: Request, src_img: List[UploadFile] = File(None)):
 
     new_id = max_id + 1
 
-    link_img = ""
+    link_img ={}
     list_link_img = []
     if src_img is not None:
+        i = 0
         for items in src_img:
             file_name = f"{new_id}_{random.randint(0, 100000)}"
-            path_to_image = f"D:/Long/Longdayhoc/ProjectLibrary/FrontEnd/public/Images/{file_name}.png"
+            path_to_image = f"{img_path}{file_name}.png"
             with open(path_to_image, "wb") as image:
                 image.write(items.file.read())
-            link_img = f"http://localhost:3000/Images/{file_name}.png"
+            link = f"{link_img_path}{file_name}.png"
+            link_img = {'id': i,'link': link}
             list_link_img.append(link_img)
+            i  = i + 1
 
     new_product = {
         "id": int(new_id),
@@ -252,12 +317,12 @@ async def create_user(request: Request, src_img: UploadFile = File(None)):
     new_id = max_id + 1
 
 
-    link_img = "http://localhost:3000/Images/avatar.png"
-    path_to_image = f"/var/www/build/image/{new_id}.png"
+    link_img = f"{link_img_path}avatar.png"
+    path_to_image = f"{img_path}{new_id}.png"
     if src_img is not None:
         with open(path_to_image, "wb") as image:
             image.write(src_img.file.read())
-        link_img = f"http://localhost:3000/Images/{new_id}.png"
+        link_img = f"{link_img_path}{new_id}.png"
 
     # Kiểm tra xem tên người dùng đã tồn tại trong danh sách hay chưa
     if any(user["user_name"] == user_name for user in data):
@@ -321,10 +386,10 @@ src_img: UploadFile = File(None)):
 
                     if src_img is not None:
                         file_name = f"{id_user}_{random.randint(0, 100000)}"
-                        path_to_image = f"D:/Long/Longdayhoc/ProjectLibrary/FrontEnd/public/Images/{file_name}.png"
+                        path_to_image = f"{img_path}{file_name}.png"
                         with open(path_to_image, "wb") as image:
                             image.write(items.file.read())
-                        link_img = f"http://localhost:3000/Images/{file_name}.png"
+                        link_img = f"{link_img_path}{file_name}.png"
                         items["image"] = link_img
 
                     with open("accounts.json", "w", encoding="utf-8") as file:
@@ -342,10 +407,10 @@ src_img: UploadFile = File(None)):
 
                 if src_img is not None:
                     file_name = f"{id_user}_{random.randint(0, 100000)}"
-                    path_to_image = f"D:/Long/Longdayhoc/ProjectLibrary/FrontEnd/public/Images/{file_name}.png"
+                    path_to_image = f"{img_path}{file_name}.png"
                     with open(path_to_image, "wb") as image:
                         image.write(items.file.read())
-                    link_img = f"http://localhost:3000/Images/{file_name}.png"
+                    link_img = f"{link_img_path}{file_name}.png"
                     items["image"] = link_img
 
                 with open("accounts.json", "w", encoding="utf-8") as file:
