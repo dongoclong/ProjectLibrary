@@ -68,14 +68,14 @@ const Word = () => {
   
 
   const column = [
-    { name: <b style={{fontWeight: 'bold', fontSize: '15px', textAlign: 'center'}}>STT</b>, selector: (row, index) => index + 1, sortable: true, grow: 0 },
-    { name: <b style={{fontWeight: 'bold', fontSize: '15px', textAlign: 'center'}}>Date</b>, selector: (row) => row.date, sortable: true },
-    { name: <b style={{fontWeight: 'bold', fontSize: '15px', textAlign: 'center'}}>Word</b>, selector: (row) => row.word, sortable: true },
-    { name: <b style={{fontWeight: 'bold', fontSize: '15px', textAlign: 'center'}}>Meaning</b>, selector: (row) => row.meaning, sortable: true },
-    { name: <b style={{fontWeight: 'bold', fontSize: '15px', textAlign: 'center'}}>Description</b>, selector: (row) => row.note, sortable: true },
-    { name: <b style={{fontWeight: 'bold', fontSize: '15px', textAlign: 'center'}}>User Edit status</b>, selector: (row) => row.user_add, sortable: true },
-    { name: <b style={{fontWeight: 'bold', fontSize: '15px', textAlign: 'center'}}>Image</b>, selector: (row) => <img src={row.image[0]} width={25} height={25} />, },
-    { name: <b style={{fontWeight: 'bold', fontSize: '15px', textAlign: 'center'}}>Subject</b>, selector: (row) => row.subject, sortable: true },
+    { name: <b style={{fontWeight: 'bold', fontSize: '15px', textAlign: 'center'}}>STT</b>, selector: (row, index) => index + 1, sortable: true, grow: 0},
+    { name: <b style={{fontWeight: 'bold', fontSize: '15px', textAlign: 'center'}}>Date</b>, selector: (row) => row.date, sortable: true, width: "12rem" },
+    { name: <b style={{fontWeight: 'bold', fontSize: '15px', textAlign: 'center'}}>Word</b>, selector: (row) => row.word, sortable: true, width: "12rem" },
+    { name: <b style={{fontWeight: 'bold', fontSize: '15px', textAlign: 'center'}}>Meaning</b>, selector: (row) => row.meaning, sortable: true, width: "12rem" },
+    { name: <b style={{fontWeight: 'bold', fontSize: '15px', textAlign: 'center'}}>Description</b>, selector: (row) => row.note, sortable: true, width: "13rem" },
+    { name: <b style={{fontWeight: 'bold', fontSize: '15px', textAlign: 'center'}}>User Edit status</b>, selector: (row) => row.user_add, sortable: true, width: "11rem"},
+    { name: <b style={{fontWeight: 'bold', fontSize: '15px', textAlign: 'center'}}>Image</b>, selector: (row) => <img src={row.image[0]} width={25} height={25} />, width: "5rem"},
+    { name: <b style={{fontWeight: 'bold', fontSize: '15px', textAlign: 'center'}}>Subject</b>, selector: (row) => row.subject, sortable: true, width: "12rem"},
 
   ];
 
