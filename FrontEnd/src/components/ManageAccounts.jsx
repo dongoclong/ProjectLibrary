@@ -7,6 +7,7 @@ import { json } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Button from 'react-bootstrap/Button';
 
+// HEllo my web app of everyone dhoc Y da nang
 
 // import '../Common/YourStyle.css';
 const ManageAccounts = ({ navigateToEditPage }) => {
