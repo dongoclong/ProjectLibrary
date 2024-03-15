@@ -19,7 +19,7 @@ app.add_middleware(
 )
 ################################
 #path_img
-img_path = 'D:/ProjectLibrary/FrontEnd/public/Images/'
+img_path = 'D:/Long/Longdayhoc/ProjectLibrary/FrontEnd/build/Images/'
 link_img_path = 'http://localhost:3000/Images/'
 ################################
 
