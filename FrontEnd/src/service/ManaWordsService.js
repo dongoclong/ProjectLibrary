@@ -55,11 +55,11 @@ export const updateWord = async (id, wordData) => {
 };
 
 
-export const editWord= async (id_word, word, meaning, note, subject, image ) => {
+export const editWord= async (id_word, word, meaning, note, subject, image, list_id_img ) => {
   try {
     const id_user_edit  = JSON.parse(loginInfo).id;
     const formData = new FormData();
-    console.log(image)
+    console.log(list_id_img)
     if (image != undefined) {
       formData.append('src_img', image);
     }
@@ -72,7 +72,7 @@ export const editWord= async (id_word, word, meaning, note, subject, image ) => 
       requestOptions.body = formData;
     }
     
-    const url = `${baseUrl}/update/${id_word}?word=${word}&meaning=${meaning}&note=${note}&subject=${subject}&id_user_update=${id_user_edit}`;
+    const url = `${baseUrl}/update/${id_word}?word=${word}&meaning=${meaning}&list_id_img=${list_id_img}&note=${note}&subject=${subject}&id_user_update=${id_user_edit}`;
     
     const response = await fetch(url, requestOptions);
     // const response = await fetch(`${baseUrl}/update/${id_word}?word=${word}&meaning=${meaning}&note=${note}&subject=${subject}&id_user_update=${id_user_edit}`, {

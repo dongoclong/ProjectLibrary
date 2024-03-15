@@ -33,6 +33,8 @@ const Word2 = () => {
   const [isModalOpen2, setIsModalOpen2] = useState(false);
   const [showPopup3, setShowPopup3] = useState(false);
   const [isModalOpen3, setIsModalOpen3] = useState(false);
+  const [deletedImageIds, setDeletedImageIds] = useState([]);
+  const [images, setImages] = useState([]);
 
 
   useEffect(() => {
@@ -41,7 +43,6 @@ const Word2 = () => {
         const data = await getWords();
         setWords(data);
         setFilteredWord(data);
-        console.log(data)
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -49,10 +50,15 @@ const Word2 = () => {
     fetchData();
   }, []);
 
-  const handleDeleteImage = (index) => {
+  const handleDeleteImage = (Imageid) => {
+
+    setDeletedImageIds(prevIds => [...prevIds, Imageid]);
+    console.log(deletedImageIds)
     // Tạo một bản sao mới của mảng ảnh không bao gồm ảnh cần xóa
-    const updatedImages = selectedRow.image.filter((_, i) => i !== index);
+    console.log(Imageid); 
+    const updatedImages = selectedRow.image.filter(imageSrc => imageSrc.id !== Imageid);
     setSelectedRow({ ...selectedRow, image: updatedImages });
+    return deletedImageIds;
   };
 
 
@@ -147,7 +153,7 @@ const Word2 = () => {
     { name: <b style={{ fontWeight: 'bold', fontSize: '17px', textAlign: 'center' }}>Meaning</b>, selector: (row) => row.meaning, sortable: true, width: "10rem" },
     { name: <b style={{ fontWeight: 'bold', fontSize: '17px', textAlign: 'center' }}>Description</b>, selector: (row) => row.note, sortable: true, width: "8rem" },
     { name: <b style={{ fontWeight: 'bold', fontSize: '17px' }}>User Edit status</b>, selector: (row) => row.user_add, sortable: true, width: "10rem" },
-    { name: <b style={{ fontWeight: 'bold', fontSize: '17px', textAlign: 'center' }}>Image</b>, selector: (row) => <img src={row.image[0]} width={25} height={25} />, width: "10rem" },
+    { name: <b style={{ fontWeight: 'bold', fontSize: '17px', textAlign: 'center' }}>Image</b>, selector: (row) => <img src={row.image[0].link} width={25} height={25} />, width: "10rem" },
     { name: <b style={{ fontWeight: 'bold', fontSize: '17px', textAlign: 'center' }}>Subject</b>, selector: (row) => row.subject, sortable: true, width: "15rem" },
 
     {
@@ -166,7 +172,7 @@ const Word2 = () => {
     },
   ];
 
-  const handleSave = async (id, word, meaning, note, subject, image) => {
+  const handleSave = async (id, word, meaning, note, subject, image, deletedImageIds) => {
     // if (!word || !meaning || !note || !subject) {
     //   setSuccessMessage2('Please fill out all required fields');
     //   setTimeout(() => {
@@ -174,7 +180,6 @@ const Word2 = () => {
     //   }, 3000);
     //   return;
     // }
-
     if (word === undefined) {
       word = '';
     }
@@ -187,7 +192,7 @@ const Word2 = () => {
     if (subject === undefined) {
       subject = '';
     }
-    const response = await editWord(id, word, meaning, note, subject, image);
+    const response = await editWord(id, word, meaning, note, subject, image, deletedImageIds);
     console.log(response)
     if (response.message.includes('Thay đổi thông tin từ thành công!')) {
       const updatedData = await getWords();
@@ -448,14 +453,14 @@ const Word2 = () => {
             <div style={{ padding: '15px 10px', maxWidth: '100%', overflowX: 'auto' }}>
               <div style={{ display: 'flex' }}>
 
-                {selectedRow.image && selectedRow.image.map((imageSrc, index) => (
-                  <div key={index} style={{ position: 'relative', height: '200px', marginRight: '10px' }}>
+                {selectedRow.image && selectedRow.image.map((imageSrc) => (
+                  <div key={imageSrc.id} style={{ position: 'relative', height: '200px', marginRight: '10px' }}>
                     <img
-                      src={imageSrc}
+                      src={imageSrc.link}
                       style={{ height: '100%', width: 'auto' }}
                     />
                     <button
-                      onClick={() => handleDeleteImage(index)}
+                      onClick={() => handleDeleteImage(imageSrc.id)}
                       style={{
                         position: 'absolute',
                         top: 0,
@@ -475,7 +480,7 @@ const Word2 = () => {
             </div>
             <div style={buttonContainerStyles}>
               <button onClick={closeModal} style={{ marginRight: '10px' }} className="btn btn-outline-dark">Close</button>
-              <button onClick={() => handleSave(selectedRow.id, selectedRow.word, selectedRow.meaning, selectedRow.note, selectedRow.subject, selectedRow.image2)} className="btn btn-outline-dark" >Save</button>
+              <button onClick={() => handleSave(selectedRow.id, selectedRow.word, selectedRow.meaning, selectedRow.note, selectedRow.subject, selectedRow.image2, deletedImageIds)} className="btn btn-outline-dark" >Save</button>
             </div>
           </div>
         </Modal >
@@ -567,14 +572,14 @@ const Word2 = () => {
               <div style={{ padding: '15px 10px', maxWidth: '100%', overflowX: 'auto' }}>
               <div style={{ display: 'flex' }}>
 
-                {selectedRow.image && selectedRow.image.length > 0 && selectedRow.image.map((imageSrc, index) => (
-                  <div key={index} style={{ position: 'relative', height: '200px', marginRight: '10px' }}>
+                {selectedRow.image && selectedRow.image.length > 0 && selectedRow.image.map((imageSrc) => (
+                  <div key={imageSrc.id} style={{ position: 'relative', height: '200px', marginRight: '10px' }}>
                     <img
-                      src={imageSrc}
+                      src={imageSrc.link}
                       style={{ height: '100%', width: 'auto' }}
                     />
                     <button
-                      onClick={() => handleDeleteImage(index)}
+                      onClick={() => handleDeleteImage(imageSrc.id)}
                       style={{
                         position: 'absolute',
                         top: 0,
