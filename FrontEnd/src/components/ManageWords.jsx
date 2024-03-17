@@ -58,7 +58,6 @@ const Word2 = () => {
     console.log(Imageid); 
     const updatedImages = selectedRow.image.filter(imageSrc => imageSrc.id !== Imageid);
     setSelectedRow({ ...selectedRow, image: updatedImages });
-    return deletedImageIds;
   };
 
 
@@ -192,6 +191,11 @@ const Word2 = () => {
     if (subject === undefined) {
       subject = '';
     }
+    if (deletedImageIds.length === 0)
+    {
+      deletedImageIds = 1000;
+    }
+
     const response = await editWord(id, word, meaning, note, subject, image, deletedImageIds);
     console.log(response)
     if (response.message.includes('Thay đổi thông tin từ thành công!')) {
